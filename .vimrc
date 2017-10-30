@@ -1,5 +1,4 @@
-" VIM Configuration File
-" For C++, Python, Haskell, Julia, R, and Latex and markdown
+" My VIM Configuration File
 " Author: Evgeny Nerush
 " Thanks to: Vasilij Kostin and Gerhard Gappmeier (rocarvaj)
 
@@ -16,16 +15,14 @@ set autoread
 " turn syntax highlighting on
 set t_Co=256
 syntax on
-" color scheme
-colorscheme torte
-" highlight current line...
+" color scheme; first trying torte, then apprentice. Thus, if apprentice not present the
+" colorscheme would be set to torte
+silent! colorscheme torte
+silent! colorscheme apprentice
+" highlight current line with colors
 set cursorline
-" ...with colors
-"hi CursorLine cterm=NONE,underline
-" highlight right-border column...
-set colorcolumn=80
-" ...with color (see :help ctermbg)
-"highlight ColorColumn ctermbg=1
+" highlight right-border column with color
+set colorcolumn=99
 " highlight word of search
 set hlsearch
 " search both upper and lowercase letters...
@@ -40,8 +37,12 @@ set number
 set showmatch
 " jump to the last position when opening a file
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+" when you split the window, the new windows will be opened below (for horizontal splitting) and at
+" the right side (for vertical splitting)
+set splitbelow
+set splitright
 
 """ INDENTATION AND STYLE """
 
@@ -49,45 +50,52 @@ endif
 set autoindent
 " use intelligent indentation (filetype-based)
 filetype plugin indent on
-" disable automatic comment '//' insertion for C++
-autocmd filetype cpp,hpp setlocal comments-=:// comments+=f://
-" due to 'filetype plugin indent on' tabstop and shiftwidth not working for
-" Python (that is guided with PEP8 anyway) and Julia (where tab = 2 spaces if
-" vim-julia package is used)
-" tab width = 4 spaces
+" set tab width to 4 spaces
 set tabstop=4
-" indent with 4 spaces
+" set indent to 4 spaces
 set shiftwidth=4
 " expand tabs to spaces
 set expandtab
-" wrap lines at 80 characters
-set textwidth=80
+" wrap lines at 99 characters
+set textwidth=99
 
 """ KEYBOARD SHORTCATS """
 
-" set vim's make command to:
-autocmd filetype cpp setlocal makeprg=g++\ -std=c++14
+" use F8 to change the colorscheme
+map <F8> :if g:colors_name != "desert" <bar> colorscheme desert <bar> else <bar> silent! colorscheme apprentice <bar> endif <Enter>
+" use <F9> to execute a project, if possible...
+map <F9> :make! % 
+" ...by setting vim's make command to:
+" autocmd filetype cpp setlocal makeprg=g++\ -std=c++14
 autocmd filetype python setlocal makeprg=python
-autocmd filetype haskell setlocal makeprg=ghc\ --make\ -o\ a.out
-autocmd filetype julia setlocal makeprg=julia
+"autocmd filetype haskell setlocal makeprg=ghc\ --make\ -o\ a.out
 autocmd filetype r setlocal makeprg=R\ --slave\ -f
-autocmd filetype tex setlocal makeprg=pdflatex
-autocmd filetype markdown setlocal makeprg=markdown\ %\ >\ %<.html
-" compile or interpret current file with <F9>
-map <F9> :make! %
-" run external make command with <Ctrl+b>
+"autocmd filetype tex setlocal makeprg=pdflatex
+"autocmd filetype markdown setlocal makeprg=markdown\ %\ >\ %<.html
+"autocmd filetype rust setlocal makeprg=cd\ ..\ &&\ cargo\ run
+" use <Ctrl+F9> to run appropriate interpreter:
+" ipython for py files...
+if has("terminal")
+    autocmd filetype python map <buffer> <C-F9> :terminal ipython --pylab
+else
+    autocmd filetype python map <buffer> <C-F9> :!ipython --pylab
+endif
+" ...ghci for haskell...
+if has("terminal")
+    autocmd filetype haskell map <buffer> <C-F9> :terminal ghci
+else
+    autocmd filetype haskell map <buffer> <C-F9> :!ghci
+endif
+" ...and R for R
+if has("terminal")
+    autocmd filetype r map <buffer> <C-F9> :terminal R
+else
+    autocmd filetype r map <buffer> <C-F9> :!R
+endif
+" use <Ctrl+b> to build with external make command
 map <C-b> :!make
-" run a.out with Ctrl+F5
-map <C-F5> :!./a.out
-" run ipython with Ctrl+F9 for py files...
-autocmd filetype python map <buffer> <C-F9> :!ipython --pylab
-" ...or run ghci if filetype is haskell...
-autocmd filetype haskell map <buffer> <C-F9> :!ghci
-" ...or R for *.R
-autocmd filetype r map <buffer> <C-F9> :!R
 " turn spellcheck on with <F12> (en) and Alt+F12 (ru)
 map <F12> :setlocal spell spelllang=en
 map <M-F12> :setlocal spell spelllang=ru
 " turn spellcheck off with Ctrl+F12
 map <C-F12> :setlocal nospell
-
