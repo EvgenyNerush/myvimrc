@@ -98,7 +98,11 @@ endif
 map <C-b> :!make
 
 " type \s to open screen session in a terminal
-map \s :terminal screen <Enter>
+if has("terminal")
+    map \s :terminal screen <Enter>
+else
+    map \s :!screen <Enter>
+endif
 
 " use F8 to change the colorscheme
 map <F8> :if g:colors_name != "peachpuff" <bar> colorscheme peachpuff <bar> else <bar> colorscheme apprentice <bar> endif <Enter>
