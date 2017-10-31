@@ -61,8 +61,6 @@ set textwidth=99
 
 """ KEYBOARD SHORTCATS """
 
-" use F8 to change the colorscheme
-map <F8> :if g:colors_name != "desert" <bar> colorscheme desert <bar> else <bar> silent! colorscheme apprentice <bar> endif <Enter>
 " use <F9> to execute a project, if possible...
 map <F9> :make! % 
 " ...by setting vim's make command to:
@@ -86,14 +84,26 @@ if has("terminal")
 else
     autocmd filetype haskell map <buffer> <C-F9> :!ghci
 endif
-" ...and R for R
+" ... R for R...
 if has("terminal")
     autocmd filetype r map <buffer> <C-F9> :terminal R
 else
     autocmd filetype r map <buffer> <C-F9> :!R
 endif
+" ...and lua for lua
+if has("terminal")
+    autocmd filetype r map <buffer> <C-F9> :terminal lua
+else
+    autocmd filetype r map <buffer> <C-F9> :!lua
+endif
 " use <Ctrl+b> to build with external make command
 map <C-b> :!make
+
+" type \s to open screen session in a terminal
+map \s :terminal screen <Enter>
+
+" use F8 to change the colorscheme
+map <F8> :if g:colors_name != "desert" <bar> colorscheme desert <bar> else <bar> silent! colorscheme apprentice <bar> endif <Enter>
 " turn spellcheck on with <F12> (en) and Alt+F12 (ru)
 map <F12> :setlocal spell spelllang=en
 map <M-F12> :setlocal spell spelllang=ru
