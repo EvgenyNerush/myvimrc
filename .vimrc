@@ -15,10 +15,8 @@ set autoread
 " turn syntax highlighting on
 set t_Co=256
 syntax on
-" color scheme; first trying torte, then apprentice. Thus, if apprentice not present the
-" colorscheme would be set to torte
-silent! colorscheme torte
-silent! colorscheme apprentice
+" color scheme, https://github.com/romainl/Apprentice
+colorscheme apprentice
 " highlight current line with colors
 set cursorline
 " highlight right-border column with color
@@ -103,7 +101,7 @@ map <C-b> :!make
 map \s :terminal screen <Enter>
 
 " use F8 to change the colorscheme
-map <F8> :if g:colors_name != "desert" <bar> colorscheme desert <bar> else <bar> silent! colorscheme apprentice <bar> endif <Enter>
+map <F8> :if g:colors_name != "peachpuff" <bar> colorscheme peachpuff <bar> else <bar> colorscheme apprentice <bar> endif <Enter>
 " turn spellcheck on with <F12> (en) and Alt+F12 (ru)
 map <F12> :setlocal spell spelllang=en
 map <M-F12> :setlocal spell spelllang=ru
