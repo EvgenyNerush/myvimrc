@@ -90,9 +90,9 @@ else
 endif
 " ...and lua for lua
 if has("terminal")
-    autocmd filetype r map <buffer> <C-F9> :terminal lua
+    autocmd filetype lua map <buffer> <C-F9> :terminal lua
 else
-    autocmd filetype r map <buffer> <C-F9> :!lua
+    autocmd filetype lua map <buffer> <C-F9> :!lua
 endif
 " use <Ctrl+b> to build with external make command
 map <C-b> :!make
