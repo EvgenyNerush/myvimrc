@@ -1,6 +1,6 @@
 " My VIM Configuration File
 " Author: Evgeny Nerush
-" Thanks to: Vasilij Kostin and Gerhard Gappmeier (rocarvaj)
+" Thanks to: Vasilij Kostin, Gerhard Gappmeier (rocarvaj) and Ian Langworth
 
 """ DECORATION AND CONVENIENCE """
 
@@ -28,7 +28,7 @@ set ignorecase
 " ...but if uppercase is evidently given, ignore lowercase
 set smartcase
 " change working directory to the directory of the current file
-set autochdir
+autocmd BufEnter * silent! lcd %:p:h
 " turn line numbers on
 set number
 " highlight matching braces
@@ -97,15 +97,25 @@ endif
 " use <Ctrl+b> to build with external make command
 map <C-b> :!make
 
+" type \l to run linter tool
+if has("terminal")
+    autocmd filetype haskell map \l :terminal hlint %
+endif
+
 " type \s to open screen session in a terminal
 if has("terminal")
-    map \s :terminal screen <Enter>
+    map \s :terminal screen <CR>
 else
-    map \s :!screen <Enter>
+    map \s :!screen 
+endif
+
+" type \r to repeat last command in the terminal
+if has("terminal")
+    map \r :call term_sendkeys("!", "<C-p> <C-j>") <CR><CR>
 endif
 
 " use F8 to change the colorscheme
-map <F8> :if g:colors_name != "peachpuff" <bar> colorscheme peachpuff <bar> else <bar> colorscheme apprentice <bar> endif <Enter>
+map <F8> :if g:colors_name != "peachpuff" <bar> colorscheme peachpuff <bar> else <bar> colorscheme apprentice <bar> endif <CR>
 " turn spellcheck on with <F12> (en) and Alt+F12 (ru)
 map <F12> :setlocal spell spelllang=en
 map <M-F12> :setlocal spell spelllang=ru
