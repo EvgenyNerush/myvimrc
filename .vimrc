@@ -12,10 +12,11 @@ set termencoding=utf-8
 set nocompatible
 " load (reread) files if modified by an external program
 set autoread
+" enable true colors support
+set termguicolors
 " turn syntax highlighting on
-set t_Co=256
 syntax on
-" color scheme, https://github.com/romainl/Apprentice
+" color scheme
 colorscheme apprentice
 " highlight current line with colors
 set cursorline
@@ -59,48 +60,37 @@ set textwidth=99
 
 """ KEYBOARD SHORTCATS """
 
-" use <F9> to execute a project, if possible...
-map <F9> :make! % 
+" use <F5> to compile/interpret the current file, if possible...
+map <F5> :make! % 
 " ...by setting vim's make command to:
-" autocmd filetype cpp setlocal makeprg=g++\ -std=c++14
-autocmd filetype python setlocal makeprg=python
-"autocmd filetype haskell setlocal makeprg=ghc\ --make\ -o\ a.out
-autocmd filetype r setlocal makeprg=R\ --slave\ -f
-"autocmd filetype tex setlocal makeprg=pdflatex
-"autocmd filetype markdown setlocal makeprg=markdown\ %\ >\ %<.html
-"autocmd filetype rust setlocal makeprg=cd\ ..\ &&\ cargo\ run
-" use <Ctrl+F9> to run appropriate interpreter:
+autocmd filetype cpp setlocal makeprg=g++\ -Wall\ -Wpedantic
+autocmd filetype python setlocal makeprg=python3
+autocmd filetype haskell setlocal makeprg=stack\ ghc
+autocmd filetype tex setlocal makeprg=pdflatex
+autocmd filetype markdown setlocal makeprg=markdown\ %\ >\ %<.html
+
+" use <F4> to run appropriate interpreter:
 " ipython for py files...
 if has("terminal")
-    autocmd filetype python map <buffer> <C-F9> :terminal ipython --pylab
+    autocmd filetype python map <buffer> <F4> :terminal ipython3 --pylab
 else
-    autocmd filetype python map <buffer> <C-F9> :!ipython --pylab
+    autocmd filetype python map <buffer> <F4> :!ipython3 --pylab
 endif
 " ...ghci for haskell...
 if has("terminal")
-    autocmd filetype haskell map <buffer> <C-F9> :terminal ghci
+    autocmd filetype haskell map <buffer> <F4> :terminal stack ghci
 else
-    autocmd filetype haskell map <buffer> <C-F9> :!ghci
-endif
-" ... R for R...
-if has("terminal")
-    autocmd filetype r map <buffer> <C-F9> :terminal R
-else
-    autocmd filetype r map <buffer> <C-F9> :!R
+    autocmd filetype haskell map <buffer> <F4> :!stack ghci
 endif
 " ...and lua for lua
 if has("terminal")
-    autocmd filetype lua map <buffer> <C-F9> :terminal lua
+    autocmd filetype lua map <buffer> <F4> :terminal lua
 else
-    autocmd filetype lua map <buffer> <C-F9> :!lua
+    autocmd filetype lua map <buffer> <F4> :!lua
 endif
-" use <Ctrl+b> to build with external make command
-map <C-b> :!make
 
-" type \l to run linter tool
-if has("terminal")
-    autocmd filetype haskell map \l :terminal hlint %
-endif
+" use <Ctrl+m> to run external make command
+map <C-m> :!make
 
 " type \s to open screen session in a terminal
 if has("terminal")
@@ -109,15 +99,20 @@ else
     map \s :!screen 
 endif
 
-" type \r to repeat last command in the terminal
+" type \r to repeat the last command
 if has("terminal")
     map \r :call term_sendkeys("!", "<C-p> <C-j>") <CR><CR>
 endif
 
-" use F8 to change the colorscheme
-map <F8> :if g:colors_name != "peachpuff" <bar> colorscheme peachpuff <bar> else <bar> colorscheme apprentice <bar> endif <CR>
-" turn spellcheck on with <F12> (en) and Alt+F12 (ru)
-map <F12> :setlocal spell spelllang=en
-map <M-F12> :setlocal spell spelllang=ru
-" turn spellcheck off with Ctrl+F12
-map <C-F12> :setlocal nospell
+" turn spellcheck on/off with <F2>
+map <F2> :setlocal spell! spelllang=en <CR>
+
+" use F3 to change the colorscheme, for the colorschemes used see
+" https://github.com/romainl/Apprentice
+" https://github.com/wimstefan/Lightning
+" https://github.com/ayu-theme/ayu-vim
+map <silent> <F3> :if g:colors_name == "apprentice" <bar> let ayucolor = "mirage" <bar> colorscheme ayu
+  \ <bar> elseif g:colors_name == "ayu" && ayucolor == "mirage" <bar> let ayucolor = "light" <bar> colorscheme ayu
+  \ <bar> elseif g:colors_name == "ayu" && ayucolor == "light" <bar> colorscheme lightning
+  \ <bar> elseif g:colors_name == "lightning" <bar> colorscheme apprentice
+  \ <bar> endif <CR>
