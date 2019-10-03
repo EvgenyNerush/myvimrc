@@ -63,7 +63,7 @@ set textwidth=99
 " use <F5> to compile/interpret the current file, if possible...
 map <F5> :make! % 
 " ...by setting vim's make command to:
-autocmd filetype cpp setlocal makeprg=g++\ -Wall\ -Wpedantic
+autocmd filetype cpp setlocal makeprg=g++\ -std=c++17\ -Wall\ -Wpedantic
 autocmd filetype python setlocal makeprg=python3
 autocmd filetype haskell setlocal makeprg=stack\ ghc
 autocmd filetype tex setlocal makeprg=pdflatex
