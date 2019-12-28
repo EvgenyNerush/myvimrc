@@ -17,7 +17,8 @@ set termguicolors
 " turn syntax highlighting on
 syntax on
 " color scheme
-colorscheme apprentice
+let ayucolor="light"  " for light version of theme
+colorscheme ayu
 " highlight current line with colors
 set cursorline
 " highlight right-border column with color
@@ -61,12 +62,12 @@ set textwidth=99
 """ KEYBOARD SHORTCATS """
 
 " use <F5> to compile/interpret the current file, if possible...
-map <F5> :make! % 
+map <F5> :make! % <CR>
 " ...by setting vim's make command to:
-autocmd filetype cpp setlocal makeprg=g++\ -std=c++17\ -Wall\ -Wpedantic
+autocmd filetype cpp setlocal makeprg=make\ %<
 autocmd filetype python setlocal makeprg=python3
 autocmd filetype haskell setlocal makeprg=stack\ ghc
-autocmd filetype tex setlocal makeprg=pdflatex
+autocmd filetype tex setlocal makeprg=make\ %<
 autocmd filetype markdown setlocal makeprg=markdown\ %\ >\ %<.html
 
 " use <F4> to run appropriate interpreter:
@@ -88,9 +89,6 @@ if has("terminal")
 else
     autocmd filetype lua map <buffer> <F4> :!lua
 endif
-
-" use <Ctrl+m> to run external make command
-map <C-m> :!make
 
 " type \s to open screen session in a terminal
 if has("terminal")
