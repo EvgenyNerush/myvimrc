@@ -10,6 +10,8 @@ set fenc=utf-8
 set termencoding=utf-8
 " disable vi compatibility
 set nocompatible
+" more powerful backspacing
+set backspace=indent,eol,start
 " load (reread) files if modified by an external program
 set autoread
 " enable true colors support
@@ -21,8 +23,10 @@ let ayucolor="light"  " for light version of theme
 colorscheme ayu
 " highlight current line with colors
 set cursorline
+" show the cursor (line, column) at the bottom right corner
+set ruler
 " highlight right-border column with color
-set colorcolumn=99
+set colorcolumn=140
 " highlight word of search
 set hlsearch
 " search both upper and lowercase letters...
@@ -39,7 +43,7 @@ set showmatch
 if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
-" when you split the window, the new windows will be opened below (for horizontal splitting) and at
+" when you split the window, the new windows will be opened below, not above (for horizontal splitting) and at
 " the right side (for vertical splitting)
 set splitbelow
 set splitright
@@ -56,51 +60,18 @@ set tabstop=4
 set shiftwidth=4
 " expand tabs to spaces
 set expandtab
-" wrap lines at 99 characters
-set textwidth=99
+" wrap lines at 140 characters
+set textwidth=140
 
 """ KEYBOARD SHORTCATS """
 
+" use <F4> to open terminal in vertically splitted window
+map <F4> :vert terminal <CR>
 " use <F5> to compile/interpret the current file, if possible...
 map <F5> :make! % <CR>
 " ...by setting vim's make command to:
-autocmd filetype cpp setlocal makeprg=make\ %<
-autocmd filetype python setlocal makeprg=python3
-autocmd filetype haskell setlocal makeprg=stack\ ghc
 autocmd filetype tex setlocal makeprg=make\ %<
-autocmd filetype markdown setlocal makeprg=markdown\ %\ >\ %<.html
-
-" use <F4> to run appropriate interpreter:
-" ipython for py files...
-if has("terminal")
-    autocmd filetype python map <buffer> <F4> :terminal ipython3 --pylab
-else
-    autocmd filetype python map <buffer> <F4> :!ipython3 --pylab
-endif
-" ...ghci for haskell...
-if has("terminal")
-    autocmd filetype haskell map <buffer> <F4> :terminal stack ghci
-else
-    autocmd filetype haskell map <buffer> <F4> :!stack ghci
-endif
-" ...and lua for lua
-if has("terminal")
-    autocmd filetype lua map <buffer> <F4> :terminal lua
-else
-    autocmd filetype lua map <buffer> <F4> :!lua
-endif
-
-" type \s to open screen session in a terminal
-if has("terminal")
-    map \s :terminal screen <CR>
-else
-    map \s :!screen 
-endif
-
-" type \r to repeat the last command
-if has("terminal")
-    map \r :call term_sendkeys("!", "<C-p> <C-j>") <CR><CR>
-endif
+autocmd filetype python setlocal makeprg=python3
 
 " turn spellcheck on/off with <F2>
 map <F2> :setlocal spell! spelllang=en <CR>
@@ -109,6 +80,8 @@ map <F2> :setlocal spell! spelllang=en <CR>
 " https://github.com/romainl/Apprentice
 " https://github.com/wimstefan/Lightning
 " https://github.com/ayu-theme/ayu-vim
+" All of them can be found in awesome-vim-colorschemes package
+" https://github.com/rafi/awesome-vim-colorschemes/
 map <silent> <F3> :if g:colors_name == "apprentice" <bar> let ayucolor = "mirage" <bar> colorscheme ayu
   \ <bar> elseif g:colors_name == "ayu" && ayucolor == "mirage" <bar> let ayucolor = "light" <bar> colorscheme ayu
   \ <bar> elseif g:colors_name == "ayu" && ayucolor == "light" <bar> colorscheme lightning
