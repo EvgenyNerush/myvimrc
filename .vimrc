@@ -17,8 +17,7 @@ set termguicolors
 " turn syntax highlighting on
 syntax on
 " color scheme
-let ayucolor="light"  " for light version of theme
-colorscheme ayu
+colorscheme afterglow
 " highlight current line with colors
 set cursorline
 " highlight right-border column with color
@@ -106,11 +105,9 @@ endif
 map <F2> :setlocal spell! spelllang=en <CR>
 
 " use F3 to change the colorscheme, for the colorschemes used see
-" https://github.com/romainl/Apprentice
-" https://github.com/wimstefan/Lightning
-" https://github.com/ayu-theme/ayu-vim
-map <silent> <F3> :if g:colors_name == "apprentice" <bar> let ayucolor = "mirage" <bar> colorscheme ayu
-  \ <bar> elseif g:colors_name == "ayu" && ayucolor == "mirage" <bar> let ayucolor = "light" <bar> colorscheme ayu
-  \ <bar> elseif g:colors_name == "ayu" && ayucolor == "light" <bar> colorscheme lightning
-  \ <bar> elseif g:colors_name == "lightning" <bar> colorscheme apprentice
+" https://github.com/rafi/awesome-vim-colorschemes/
+map <silent> <F3> :if g:colors_name == "afterglow" <bar> colorscheme anderson
+  \ <bar> elseif g:colors_name == "anderson" <bar> colorscheme lightning
+  \ <bar> elseif g:colors_name == "lightning" <bar> set background=light <bar> let g:two_firewatch_italics=1 <bar> colorscheme two-firewatch
+  \ <bar> elseif g:colors_name == "two-firewatch" <bar> colorscheme afterglow
   \ <bar> endif <CR>
